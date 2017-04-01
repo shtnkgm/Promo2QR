@@ -1,10 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>テスト</title>
+    <meta charset="UTF-8">
+    <title>Promo2QR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-red.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
 <body>
-<p>テスト</p>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Promo2QR / プロモーションコード簡単入力</span>
+            </div>
+        </header>
+        <main class="mdl-layout__content">
+            <div class="mdl-grid" style="padding: 70px">
+                <div class="page-content">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" id="promoCodeForm" type="text">
+                        <label class="mdl-textfield__label" for="promoCodeForm">プロモーションコードをペースト</label>
+                    </div>
+                    <p>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="getQRCodeButton">QRコードを作成する</button>
+                    </p>
+                    <img id="QRCodeImage" src="">
+                    <p><a href="" id="installLink"></a></p>
+                    <div style="background-color:#FAFAFA; padding: 16px">
+                        <h6><strong>Promo2QRとは？</strong></h6>
+                        <p>iOSアプリのプロモーションコードをインストールリンクを含んだQRコードに変換します。<br>
+                            プロモーションコードをiPhoneで入力する手間が省けます。
+                    <h6><strong>使い方</strong></h6>
+                        <ol>
+                            <li>Promo2QRでQRコードを作成</li>
+                            <li>QRコードリーダーアプリで読み込み、リンクをタップ</li>
+                            <li>iTunesStoreアプリが開くので、「コードを使う」をタップ</li>
+                            <li>アプリがインストールされる</li>
+                        </ol>
+                        </p>
+                    <h6><strong>メモ</strong></h6>
+                        <ul>
+                            <li>プロモーションコードの発行方法<br>iTunesConnect > マイApp > [発行したいアプリ] > 機能 > プロモーションコード</li>
+                            <li>アプリのインストール時に「iTunes Storeに接続できません」と表示される場合、<br>既存のアプリをアンインストールすることでインストールできる場合があります。</li>
+                        </ul>
+                    </div>
+                    <div class="footer">
+                        <br>
+                        <br>
+                        <p>© Shota Nakagami All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        $('#getQRCodeButton').on("click", function() {
+            var image = $('#QRCodeImage')
+            var promoCode = $('#promoCodeForm').val();
+            var installURL = "https://phobos.apple.com/WebObjects/MZFinance.woa/wa/freeProductCodeWizard?code="+promoCode
+            image.attr("src","http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl="+installURL);
+            $('#installLink').attr("href",installURL);
+            $('#installLink').text(installURL);
+        });
+        
+        $('#promoCodeForm').on("keydown", function(e) {
+	       if(e.keyCode === 13) {
+               $('#getQRCodeButton').trigger("click");
+	       }
+        });
+    </script>
 </body>
 </html>
