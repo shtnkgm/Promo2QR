@@ -62,6 +62,12 @@
         $('#getQRCodeButton').on("click", function() {
             var image = $('#QRCodeImage')
             var promoCode = $('#promoCodeForm').val();
+            
+            if (promoCode.length == 0) {
+                alert("プロモコードを入力してください")
+                return
+            }
+            
             var installURL = "https://phobos.apple.com/WebObjects/MZFinance.woa/wa/freeProductCodeWizard?code="+promoCode
             image.attr("src","http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl="+installURL);
             $('#installLink').attr("href",installURL);
