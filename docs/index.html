@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-red.min.css" />
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="qrcode.js"></script>
 </head>
 
 <body>
@@ -31,8 +32,8 @@
                             class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
                             id="getQRCodeButton">QRコードを作成する</button>
                     </p>
-                    <img id="QRCodeImage" src="">
-                    <p><a href="" id="installLink"></a></p>
+                    <div id="qr-holder"></div>
+                    <div id="url"></div>
                     <div style="background-color:#FAFAFA; padding: 16px">
                         <h6><strong>Promo2QRとは？</strong></h6>
                         <p>iOSアプリのプロモコード（プロモーションコード）をインストールリンクを含んだQRコードに変換します。<br>
@@ -69,19 +70,24 @@
     </div>
     <script>
         $('#getQRCodeButton').on("click", function () {
-            var image = $('#QRCodeImage')
             var promoCode = $('#promoCodeForm').val();
-
             if (promoCode.length == 0) {
-                alert("プロモコードを入力してください")
-                return
+              alert("プロモコードを入力してください")
+              return
             }
+            var installURL = "https://phobos.apple.com/WebObjects/MZFinance.woa/wa/freeProductCodeWizard?code=" + promoCode;
 
-            var installURL =
-                "https://phobos.apple.com/WebObjects/MZFinance.woa/wa/freeProductCodeWizard?code=" + promoCode
-            image.attr("src", "http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=" + installURL);
-            $('#installLink').attr("href", installURL);
-            $('#installLink').text(installURL);
+            // Remove previous QR code
+            document.getElementById('qr-holder').innerHTML = "";
+
+            // Generate new QR code
+            var qr = qrcode(0, "L");
+            qr.addData(installURL);
+            qr.make();
+
+            $("div#qr-holder").html(qr.createSvgTag(5));
+            $('#url').attr("href", installURL);
+            $('#url').text(installURL);
         });
 
         $('#promoCodeForm').on("keydown", function (e) {
